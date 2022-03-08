@@ -11,25 +11,48 @@ class App extends React.Component {
     super(props);
     this.state = {
       videoData: [],
-      currVideo: {}
+      currVideo: {},
+      filtered: [],
     };
+
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   componentDidMount() {
+
+    // search('queryString', data=> {
+    //   this.setState({
+    //     currVideo: data[0],
+    //     videoData: data
+    //   })
+    // })
+
     this.setState({
       videoData: data
     });
   }
 
 
+  handleFilter(arr) {
+    this.setState({
+      filtered: arr
+    });
+  }
 
   render() {
+    const list = this.state.filtered.length ? this.state.filtered : this.state.videoData;
 
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><Search /></div>
+            <div>
+              <Search
+                videoData={this.state.videoData}
+                filteredData={this.state.filtered}
+                handleFilter={this.handleFilter}
+              />
+            </div>
           </div>
         </nav>
         <div className="row">
@@ -37,7 +60,11 @@ class App extends React.Component {
             <div><VideoPlayer /></div>
           </div>
           <div className="col-md-5">
-            <div><VideoList videos={this.state.videoData} /></div>
+            <div>
+              <VideoList
+                videos={list}
+              />
+            </div>
           </div>
         </div>
       </div>
